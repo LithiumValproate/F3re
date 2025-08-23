@@ -1,0 +1,60 @@
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
+!/.idea/F3re.iml
+!/.idea/modules.xml
+!/.idea/vcs.xml
+!/.idea/codeStyles/
+!/.idea/runConfigurations/
+
+# Go
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.log
+*.pot
+*.mo
+*.so
+*.egg-info/
+dist/
+build/
+MANIFEST
+
+# Project-specific
+libs/go-chat/go-chat
+libs/go-gateway/go-gateway
+libs/go-identity/go-identity
