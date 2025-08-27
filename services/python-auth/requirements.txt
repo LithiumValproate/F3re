@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy==2.0.23
+bcrypt==4.1.2
+passlib==1.7.4

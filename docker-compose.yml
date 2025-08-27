@@ -1,0 +1,76 @@
+version: '3.8'
+
+# Define a network for our services to communicate with each other
+networks:
+  f3re-network:
+    driver: bridge
+
+services:
+  # API Gateway Service (Go)
+  # The single entry point for the frontend.
+  gateway:
+    build:
+      context: ./services/go-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Expose gateway to the host machine
+    volumes:
+      - ./services/go-gateway:/app # Mount source code for live-reloading
+    networks:
+      - f3re-network
+    depends_on:
+      - chat
+      - identity
+      - auth
+      - academic-data
+    # In a real scenario, you'd use a wait-for-it script or similar
+    # to ensure dependent services are actually ready before starting.
+
+  # Chat Service (Go)
+  chat:
+    build:
+      context: . # Use project root as context to access all services
+      dockerfile: ./services/go-chat/Dockerfile # Specify path to Dockerfile
+    ports:
+      - "8081:8080" # Expose for direct testing if needed
+    volumes:
+      - ./services/go-chat:/app
+    networks:
+      - f3re-network
+    # Service name 'chat' is its hostname on the f3re-network
+
+  # Identity Service (Go)
+  identity:
+    build:
+      context: ./services/go-identity
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./services/go-identity:/app
+    networks:
+      - f3re-network
+
+  # Authentication Service (Python)
+  auth:
+    build:
+      context: ./services/python-auth
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./services/python-auth:/app
+    networks:
+      - f3re-network
+
+  # Academic Data Service (Python)
+  academic-data:
+    build:
+      context: ./services/python-academic_data
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000"
+    volumes:
+      - ./services/python-academic_data:/app
+    networks:
+      - f3re-network

@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "academic_data"
+name = "f3re-auth"
 version = "0.1.0"
 authors = [
-  { name="Your Name", email="you@example.com" },
+  { name="LithiumValproate", email="minaki@matsu.rip" },
 ]
-description = "A library containing the core data models for the Sophomore project."
+description = "A library containing the core data models for the F3re project."
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
@@ -18,8 +18,8 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/your-repo/sophomore"
-"Bug Tracker" = "https://github.com/your-repo/sophomore/issues"
+"Homepage" = "https://github.com/LithiumValproate/F3re"
+"Bug Tracker" = "https://github.com/LithiumValproate/F3re/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

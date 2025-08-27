@@ -1,4 +1,4 @@
-package participant
+package user
 
 import (
 	"encoding/json"

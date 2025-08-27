@@ -2,7 +2,7 @@ package chat
 
 import (
 	"github.com/gorilla/websocket"
-	"go-chat/participant"
+	"go-chat/user"
 	"log"
 	"time"
 )
@@ -14,16 +14,16 @@ const (
 	maxMessageSize = 512
 )
 
-// Client 是一个将 participant (业务逻辑) 和 websocket 连接 (网络) 绑定的适配器
+// Client 是一个将 user (业务逻辑) 和 websocket 连接 (网络) 绑定的适配器
 type Client struct {
-	participant participant.Participant
+	participant user.Participant
 	room        *Room
 	conn        *websocket.Conn
 	send        chan []byte // 带缓冲的 channel，用于发送消息
 }
 
 // NewClient 创建一个新的 Client 实例
-func NewClient(p participant.Participant, room *Room, conn *websocket.Conn) *Client {
+func NewClient(p user.Participant, room *Room, conn *websocket.Conn) *Client {
 	return &Client{
 		participant: p,
 		room:        room,

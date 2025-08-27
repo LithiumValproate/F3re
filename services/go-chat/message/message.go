@@ -1,7 +1,7 @@
 package message
 
 import (
-	"go-chat/participant"
+	"go-chat/user"
 )
 
 type MessageType string
@@ -16,23 +16,23 @@ const (
 )
 
 type Message interface {
-	GetSender() participant.Participant
-	SetSender(sender participant.Participant)
+	GetSender() user.Participant
+	SetSender(sender user.Participant)
 	GetType() MessageType
 	GetTimestamp() int64
 }
 
 type BaseMessage struct {
-	Sender    participant.Participant `json:"sender"`
-	Type      MessageType             `json:"type"`
-	Timestamp int64                   `json:"timestamp"`
+	Sender    user.Participant `json:"sender"`
+	Type      MessageType      `json:"type"`
+	Timestamp int64            `json:"timestamp"`
 }
 
-func (m *BaseMessage) GetSender() participant.Participant {
+func (m *BaseMessage) GetSender() user.Participant {
 	return m.Sender
 }
 
-func (m *BaseMessage) SetSender(s participant.Participant) {
+func (m *BaseMessage) SetSender(s user.Participant) {
 	m.Sender = s
 }
 

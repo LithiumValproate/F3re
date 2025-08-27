@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"go-chat/message"
-	"go-chat/participant"
+	"go-chat/user"
 	"time"
 )
 
@@ -14,8 +14,8 @@ type metaMessage struct {
 }
 
 type participantUpdateRequest struct {
-	oldParticipant participant.Participant
-	newParticipant participant.Participant
+	oldParticipant user.Participant
+	newParticipant user.Participant
 }
 
 type Room struct {
@@ -100,7 +100,7 @@ func (r *Room) handleIncomingMessage(sender *Client, rawMsg []byte) {
 		fmt.Printf("error unmarshalling message: %v\n", err)
 		return
 	}
-	if _, ok := sender.participant.(*participant.MutedParticipant); ok {
+	if _, ok := sender.participant.(*user.MutedParticipant); ok {
 		notice := message.NoticeMessage{
 			BaseMessage: message.BaseMessage{
 				Type:      message.TypeNotice,
@@ -208,7 +208,7 @@ func (r *Room) writeToClient(client *Client, msgBytes []byte) {
 	}
 }
 
-func (r *Room) Kick(p participant.Participant) {
+func (r *Room) Kick(p user.Participant) {
 	for client := range r.clients {
 		if client.participant.ID() == p.ID() {
 			r.unregister <- client
@@ -217,7 +217,7 @@ func (r *Room) Kick(p participant.Participant) {
 	}
 }
 
-func (r *Room) ReplaceParticipant(old, new participant.Participant) {
+func (r *Room) ReplaceParticipant(old, new user.Participant) {
 	updateReq := participantUpdateRequest{
 		oldParticipant: old,
 		newParticipant: new,
@@ -225,34 +225,34 @@ func (r *Room) ReplaceParticipant(old, new participant.Participant) {
 	r.update <- updateReq
 }
 
-func (r *Room) MuteParticipant(moderator, target participant.Participant) error {
-	if _, ok := moderator.(*participant.Moderator); !ok {
+func (r *Room) MuteParticipant(moderator, target user.Participant) error {
+	if _, ok := moderator.(*user.Moderator); !ok {
 		return errors.New("permission denied")
 	}
-	if _, ok := target.(*participant.MutedParticipant); ok {
-		return errors.New("participant is already muted")
+	if _, ok := target.(*user.MutedParticipant); ok {
+		return errors.New("user is already muted")
 	}
 
-	mutedP := participant.NewMutedParticipant(target.GetUser(), target.Nickname())
+	mutedP := user.NewMutedParticipant(target.GetUser(), target.Nickname())
 	r.ReplaceParticipant(target, mutedP)
 	fmt.Printf("👑 Moderator [%s] muted [%s]\n", moderator.Nickname(), target.Nickname())
 	return nil
 }
 
-func (r *Room) UnmuteParticipant(moderator, target participant.Participant) error {
+func (r *Room) UnmuteParticipant(moderator, target user.Participant) error {
 	// FIX: 修正了函数签名和内部逻辑
-	if _, ok := moderator.(*participant.Moderator); !ok {
+	if _, ok := moderator.(*user.Moderator); !ok {
 		return errors.New("permission denied")
 	}
 
 	// 确保目标确实是 MutedParticipant
-	mutedP, ok := target.(*participant.MutedParticipant)
+	mutedP, ok := target.(*user.MutedParticipant)
 	if !ok {
-		return errors.New("participant is not muted")
+		return errors.New("user is not muted")
 	}
 
 	// FIX: 正确地创建 CommonParticipant
-	commonP := participant.NewCommonParticipant(mutedP.GetUser(), mutedP.Nickname())
+	commonP := user.NewCommonParticipant(mutedP.GetUser(), mutedP.Nickname())
 	// FIX: 调用安全的 ReplaceParticipant
 	r.ReplaceParticipant(target, commonP)
 	fmt.Printf("👑 Moderator [%s] unmuted [%s]\n", moderator.Nickname(), target.Nickname())
@@ -261,8 +261,8 @@ func (r *Room) UnmuteParticipant(moderator, target participant.Participant) erro
 
 // ModeratorLeave 让管理员自己离开房间 (替代了 RemoveParticipant)
 // FIX: 更改了函数名，增加了返回值
-func (r *Room) ModeratorLeave(moderator participant.Participant) error {
-	mod, ok := moderator.(*participant.Moderator)
+func (r *Room) ModeratorLeave(moderator user.Participant) error {
+	mod, ok := moderator.(*user.Moderator)
 	if !ok {
 		return errors.New("permission denied: only moderators can perform this action")
 	}
@@ -277,11 +277,11 @@ func (r *Room) ModeratorLeave(moderator participant.Participant) error {
 	return errors.New("moderator not found in this room")
 }
 
-func (r *Room) ChangeNicknameOf(p participant.Participant, newNickname string) error {
+func (r *Room) ChangeNicknameOf(p user.Participant, newNickname string) error {
 	// FIX: 这个操作也存在数据竞争，需要通过 channel 处理。
 	// 为了简化，我们假设这是一个不常用的操作，并保持简单。
 	// 在一个真正的生产系统中，这也应该通过 update channel 来完成。
-	if _, ok := p.(*participant.MutedParticipant); ok {
+	if _, ok := p.(*user.MutedParticipant); ok {
 		return errors.New("muted participants cannot change nickname")
 	}
 	p.ChangeNickname(newNickname)

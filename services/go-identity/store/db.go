@@ -18,7 +18,7 @@ func NewUserStore(db *sql.DB) *UserStore {
 func ConnectDB() (*sql.DB, error) {
 	// Replace with your actual database connection logic
 	// For example, using a PostgreSQL database:
-	// return sql.Open("postgres", "participant=username dbname=mydb sslmode=disable")
+	// return sql.Open("postgres", "user=username dbname=mydb sslmode=disable")
 	return nil, nil // Placeholder
 }
 
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS users (
 }
 
 var (
-	ErrUserNotFound = errors.New("participant not found")
-	ErrUserExists   = errors.New("participant already exists")
+	ErrUserNotFound = errors.New("user not found")
+	ErrUserExists   = errors.New("user already exists")
 )
 
 func (s *UserStore) Create(u user.User) error {
@@ -173,6 +173,6 @@ func userFactory(id, name, pwdHash, userType string) (user.User, error) {
 	case "bot":
 		return user.NewBotUserFromDB(id, name, pwdHash)
 	default:
-		return nil, errors.New("unknown participant type")
+		return nil, errors.New("unknown user type")
 	}
 }
