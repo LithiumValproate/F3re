@@ -3,8 +3,8 @@ import json
 from enum import Enum
 from typing import get_type_hints
 
-from model.contact import Email, Phone
-from model.models import Student
+from ..model.contact import Email, Phone
+from ..model.models import Student
 from . import utils
 
 

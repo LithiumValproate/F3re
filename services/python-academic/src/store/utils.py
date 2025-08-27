@@ -1,4 +1,4 @@
-import academic_data as ad
+from ..model import models as ad
 
 CLASS_REGISTRY = {
     'Student': ad.Student,

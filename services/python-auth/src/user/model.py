@@ -2,6 +2,8 @@ import bcrypt
 from enum import Enum
 from sqlalchemy import Column, String, Enum as SAEnum
 from sqlalchemy.orm import declarative_base
+import f3re
+
 
 Base = declarative_base()
 

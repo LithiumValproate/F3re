@@ -3,9 +3,9 @@ import json
 from dataclasses import is_dataclass, asdict
 from enum import Enum
 
-from model.constants import Sex, Status
-from model.contact import Email, Phone
-from model.models import Address, Course, Grade, Student, Teacher
+from ..model.constants import Sex, Status
+from ..model.contact import Email, Phone
+from ..model.models import Address, Course, Grade, Student, Teacher
 from . import utils
 
 
