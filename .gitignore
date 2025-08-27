@@ -55,6 +55,6 @@ build/
 MANIFEST
 
 # Project-specific
-libs/go-chat/go-chat
-libs/go-gateway/go-gateway
-libs/go-identity/go-identity
+services/go-chat/go-chat
+services/go-gateway/go-gateway
+services/go-identity/go-identity

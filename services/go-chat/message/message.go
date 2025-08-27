@@ -65,7 +65,6 @@ type Image struct {
 
 type ImageMessage struct {
 	BaseMessage
-
 	Content Image `json:"content"`
 }
 

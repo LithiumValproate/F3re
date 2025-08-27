@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-var _ RoomManager = (*Room)(nil)
-
 type metaMessage struct {
 	MsgType message.MessageType `json:"type"`
 }
@@ -126,9 +124,37 @@ func (r *Room) handleIncomingMessage(sender *Client, rawMsg []byte) {
 		textMsg.SetSender(sender.participant)
 		r.broadcast <- &textMsg
 	case message.TypeImage:
+		var imgMsg message.ImageMessage
+		if err := json.Unmarshal(rawMsg, &imgMsg); err != nil {
+			fmt.Printf("error unmarshalling image message: %v\n", err)
+			return
+		}
+		imgMsg.SetSender(sender.participant)
+		r.broadcast <- &imgMsg
 	case message.TypeVideo:
+		var vidMsg message.VideoMessage
+		if err := json.Unmarshal(rawMsg, &vidMsg); err != nil {
+			fmt.Printf("error unmarshalling video message: %v\n", err)
+			return
+		}
+		vidMsg.SetSender(sender.participant)
+		r.broadcast <- &vidMsg
 	case message.TypeAudio:
+		var audMsg message.AudioMessage
+		if err := json.Unmarshal(rawMsg, &audMsg); err != nil {
+			fmt.Printf("error unmarshalling audio message: %v\n", err)
+			return
+		}
+		audMsg.SetSender(sender.participant)
+		r.broadcast <- &audMsg
 	case message.TypeFile:
+		var fileMsg message.FileMessage
+		if err := json.Unmarshal(rawMsg, &fileMsg); err != nil {
+			fmt.Printf("error unmarshalling file message: %v\n", err)
+			return
+		}
+		fileMsg.SetSender(sender.participant)
+		r.broadcast <- &fileMsg
 	default:
 		fmt.Printf("unknown message type: %s\n", meta.MsgType)
 		return

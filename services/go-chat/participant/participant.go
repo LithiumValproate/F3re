@@ -116,6 +116,10 @@ func NewMutedParticipant(u user.User, nick string) *MutedParticipant {
 	}
 }
 
+func (mp *MutedParticipant) ChangeNickname(nick string) {
+	// 禁止更改昵称
+}
+
 func (mp *MutedParticipant) Type() ParticipantType {
 	return TypeMuted
 }
