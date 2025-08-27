@@ -64,13 +64,13 @@ services:
       - f3re-network
 
   # Academic Data Service (Python)
-  academic-data:
+  academic:
     build:
-      context: ./services/python-academic_data
+      context: ./services/python-academic
       dockerfile: Dockerfile
     ports:
       - "5002:5000"
     volumes:
-      - ./services/python-academic_data:/app
+      - ./services/python-academic:/app
     networks:
       - f3re-network

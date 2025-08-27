@@ -3,8 +3,9 @@ import json
 from enum import Enum
 from typing import get_type_hints
 
-from academic_data import Student
-import utils
+from model.contact import Email, Phone
+from model.models import Student
+from . import utils
 
 
 class EnhancedJSONDecoder(json.JSONDecoder):
@@ -20,7 +21,9 @@ class EnhancedJSONDecoder(json.JSONDecoder):
                 for key, value in dct.items():
                     if key in field_types:
                         field_type = field_types[key]
-                        if isinstance(field_type, type) and issubclass(field_type, Enum):
+                        if field_type is Phone or field_type is Email:
+                            dct[key] = field_type(value)
+                        elif isinstance(field_type, type) and issubclass(field_type, Enum):
                             dct[key] = field_type(value)
                         elif field_type is dt.date and isinstance(value, str):
                             dct[key] = dt.date.fromisoformat(value)

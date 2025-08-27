@@ -3,12 +3,16 @@ import json
 from dataclasses import is_dataclass, asdict
 from enum import Enum
 
-from academic_data import Student, Course, Teacher, Sex, Address, Grade, Status, Phone, Email
-import utils
+from model.constants import Sex, Status
+from model.contact import Email, Phone
+from model.models import Address, Course, Grade, Student, Teacher
+from . import utils
 
 
 class EnhancedJSONEncoder(json.JSONEncoder):
     def default(self, o):
+        if isinstance(o, (Phone, Email)):
+            return o.value
         if is_dataclass(o):
             if o.__class__.__name__ in utils.CLASS_REGISTRY:
                 dct = asdict(o)
@@ -36,7 +40,8 @@ def student_to_json(student: Student) -> str:
 
 
 if __name__ == '__main__':
-    teacher = Teacher(teacher_id=101, name='Dr. Turing', sex=Sex.MALE, department='Computer Science', phone=Phone('12345678901'), email=Email('turing@example.com'))
+    teacher = Teacher(teacher_id=101, name='Dr. Turing', sex=Sex.MALE, department='Computer Science',
+                      phone=Phone('12345678901'), email=Email('turing@example.com'))
     course = Course(
         course_id=1,
         name='Introduction to CS',

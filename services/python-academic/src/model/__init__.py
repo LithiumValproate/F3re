@@ -1,6 +1,6 @@
 # ruff: noqa: F401
 """
-A collection of modules for the Sophomore project.
+A collection of modules for the F3re project.
 
 This package exports all the core data models, contact information types,
 and constants used throughout the academic-related services.
