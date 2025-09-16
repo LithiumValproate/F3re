@@ -1,7 +1,7 @@
+import csv
 from dataclasses import is_dataclass, asdict
 import datetime as dt
 from enum import Enum
-import sqlite3
 import sqlite3 as sql
 from typing import Optional, get_type_hints
 
@@ -10,13 +10,15 @@ from ..model.models import Student
 from . import utils
 
 
-STUDENT_DB = 'students.sqlite'
+STUDENT_DB = 'academic.sqlite'
+MAJOR_TABLE = '../static/major.csv'
+COURSE_TABLE = '../static/course.csv'
 
 
 class StudentStore:
     def __init__(self, db_path: str = STUDENT_DB):
         self._db_path = db_path
-        self._conn: Optional[sqlite3.Connection] = None
+        self._conn: Optional[sql.Connection] = None
 
     def __enter__(self):
         self._conn = sql.connect(self._db_path)
@@ -39,13 +41,14 @@ class StudentStore:
             phone INTEGER NOT NULL,
             email VARCHAR(255),
             status VARCHAR(20) NOT NULL
-        )
+        );
         ''')
         c.execute('''
-        CREATE TABLE IF NOT EXISTS majors (
-            
-        )
-        ''')
+                  create table IF not exists majors
+                  (
+
+                  )
+                  ''')
         c.execute('''
         CREATE TABLE IF NOT EXISTS courses (
         )
@@ -60,3 +63,4 @@ class StudentStore:
             FOREIGN KEY (student_id) REFERENCES students_profile(student_id)
         )
         ''')
+        self._conn.commit()
