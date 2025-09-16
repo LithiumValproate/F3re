@@ -1,9 +1,6 @@
-from .from_json import (
+from .json_mapper import (
     EnhancedJSONDecoder,
     student_from_json,
-)
-
-from .to_json import (
     EnhancedJSONEncoder,
     student_to_json,
 )

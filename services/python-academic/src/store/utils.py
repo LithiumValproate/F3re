@@ -1,8 +1,13 @@
-from ..model import models as ad
+from ..model import models as ac, contact
 
 CLASS_REGISTRY = {
-    'Student': ad.Student,
-    'Course': ad.Course,
-    'Teacher': ad.Teacher,
-    'Address': ad.Address
+    'Student': ac.Student,
+    'Course': ac.Course,
+    'Teacher': ac.Teacher,
+    'Address': ac.Address,
+    'FamilyMember': ac.FamilyMember,
+    'Grade': ac.Grade,
+    'TimeSlot': ac.TimeSlot,
+    'Phone': contact.Phone,
+    'Email': contact.Email,
 }

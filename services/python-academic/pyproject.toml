@@ -21,6 +21,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.9"
+mysql-connector-python = "^9.4.0"
 
 [build-system]
 requires = ["poetry-core"]
