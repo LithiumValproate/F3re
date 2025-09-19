@@ -1,31 +1,31 @@
-[tool.poetry]
+[project]
 name = "f3re-auth"
 version = "0.1.0"
 description = "A library containing the core data models for the F3re project."
-authors = ["LithiumValproate <minaki@matsu.rip>"]
+authors = [{ name = "LithiumValproate", email = "minaki@matsu.rip" }]
 readme = "README.md"
-homepage = "https://github.com/LithiumValproate/F3re"
-repository = "https://github.com/LithiumValproate/F3re"
+requires-python = ">=3.9"
+license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-packages = [
-    { include = "core", from = "src" },
-    { include = "user", from = "src" },
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "SQLAlchemy==2.0.23",
+    "bcrypt==4.1.2",
+    "passlib==1.7.4",
 ]
 
-[tool.poetry.urls]
+[project.urls]
 "Bug Tracker" = "https://github.com/LithiumValproate/F3re/issues"
+Homepage = "https://github.com/LithiumValproate/F3re"
+Repository = "https://github.com/LithiumValproate/F3re"
 
-[tool.poetry.dependencies]
-python = ">=3.9"
-fastapi = "*"
-uvicorn = {version = "*", extras = ["standard"]}
-SQLAlchemy = "2.0.23"
-bcrypt = "4.1.2"
-passlib = "1.7.4"
+[[tool.poetry.packages]]
+include = "f3re"
+from = "src"
 
 [build-system]
 requires = ["poetry-core"]
