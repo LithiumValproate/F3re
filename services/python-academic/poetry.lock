@@ -46,4 +46,4 @@ webauthn = ["fido2 (==1.1.2)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9"
-content-hash = "63a120dbce786969796913b26ceed822203993d24a6d4a492cae753fd5cbc50a"
+content-hash = "1313ff7982e0d4c50e048d6b7b531d4069e7c943c3f8c78c3cf55dacbb74318f"

@@ -2,5 +2,39 @@
 name = "f3re"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.13"
-dependencies = ["mysql-connector-python (>=9.4.0,<10.0.0)"]
+readme = "README.md"
+requires-python = ">=3.9"
+authors = []
+
+[project.optional-dependencies]
+academic = ["mysql-connector-python>=9.4.0,<10.0.0"]
+auth = [
+    "fastapi",
+    "uvicorn[standard]",
+    "SQLAlchemy==2.0.23",
+    "bcrypt==4.1.2",
+    "passlib==1.7.4",
+]
+all = [
+    "mysql-connector-python>=9.4.0,<10.0.0",
+    "fastapi",
+    "uvicorn[standard]",
+    "SQLAlchemy==2.0.23",
+    "bcrypt==4.1.2",
+    "passlib==1.7.4",
+]
+
+[[tool.poetry.packages]]
+include = "f3re"
+from = "services/python-academic/src"
+
+[[tool.poetry.packages]]
+include = "f3re"
+from = "services/python-auth/src"
+
+[[tool.poetry.include]]
+path = "services/python-academic/src/f3re/academic/static/*.csv"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
