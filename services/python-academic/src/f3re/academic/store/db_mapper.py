@@ -1,17 +1,19 @@
 import csv
 from dataclasses import is_dataclass, asdict
 import datetime as dt
+from dotenv import load_dotenv
 from enum import Enum
+import os
 import sqlite3 as sql
 from typing import Optional, get_type_hints
 
-from ..model.contact import Email, Phone
-from ..model.models import Student
-from . import utils
+from f3re.academic.model import Student, Email, Phone
+import utils
 
-STUDENT_DB = 'academic.sqlite'
-MAJOR_TABLE = '../static/major.csv'
-COURSE_TABLE = '../static/course.csv'
+load_dotenv('../static/.env')
+STUDENT_DB = os.getenv('DB')
+MAJOR_TABLE = os.getenv('MAJOR')
+COURSE_TABLE = os.getenv('COURSE')
 
 
 class StudentStore:
@@ -32,7 +34,7 @@ class StudentStore:
             raise ConnectionError('Cannot create table')
         c = self.conn.cursor()
         c.execute('''
-                  create table Students_Profile (
+                  create table if not exists Students_Profile (
                       Student_Id   integer primary key,
                       Student_Name varchar(255) not null,
                       Sex          varchar(10)  not null,
@@ -44,19 +46,19 @@ class StudentStore:
                       );
                   ''')
         c.execute('''
-                  create table Majors (
+                  create table if not exists Majors (
                       Major_Id   integer primary key,
                       Major_Name varchar(255) not null
                       )
                   ''')
         c.execute('''
-                  create table Courses (
-                      Course_Id integer primary key,
-                      Course_Name varchar(255) not null,
-                  )
+                  create table if not exists Courses (
+                      Course_Id   integer primary key,
+                      Course_Name varchar(255) not null
+                      )
                   ''')
         c.execute('''
-                  create table Students_Academic (
+                  create table if not exists Students_Academic (
                       Student_Id  integer primary key,
                       Enroll_Year integer      not null,
                       Major_Id    integer      not null,
@@ -67,7 +69,7 @@ class StudentStore:
                       Score       integer      not null,
                       foreign key (Student_Id) references Students_Profile (Student_Id),
                       foreign key (Major_Id) references Majors (Major_Id),
-                      foreign key (Course_Id) references Courses (Course_Id) 
+                      foreign key (Course_Id) references Courses (Course_Id)
                       )
                   ''')
         self.conn.commit()
@@ -89,9 +91,7 @@ class StudentStore:
         if not self.conn:
             raise ConnectionError('Cannot find student')
         c = self.conn.cursor()
-        c.execute('''
-                  select * from Students_Profile where Student_Id = ?
-                  ''', (student_id,))
+        c.execute('select * from Students_Profile where Student_Id = ?', (student_id,))
         row = c.fetchone()
         if not row:
             raise sql.OperationalError('Student not found at profile table')
@@ -104,11 +104,8 @@ class StudentStore:
             'email': row[6],
             'status': row[7]
         }
-        c.execute('''
-                  select * from Students_Academic where Student_Id = ?
-                  ''', (student_id,))
+        c.execute('select * from Students_Academic where Student_Id = ?', (student_id,))
         row = c.fetchone()
         if not row:
             raise sql.OperationalError('Student not found at academic table')
         dct.update({'enroll_year': row[1], 'major': (row[2], row[3]), 'class_id': row[4]})
-
