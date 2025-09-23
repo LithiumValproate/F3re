@@ -1,4 +1,5 @@
-from ..model import models as ac, contact
+from f3re.academic import models as ac
+from f3re.academic.model import contact
 
 CLASS_REGISTRY = {
     'Student': ac.Student,

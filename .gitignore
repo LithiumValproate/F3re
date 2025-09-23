@@ -58,4 +58,6 @@ MANIFEST
 services/go-chat/go-chat
 services/go-gateway/go-gateway
 services/go-identity/go-identity
-!/academic.sqlite
+!/*.env
+.env
+/academic.sqlite
